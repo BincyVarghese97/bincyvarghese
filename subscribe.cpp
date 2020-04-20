@@ -2,7 +2,7 @@
 #include "stdlib.h"
 #include "string.h"
 #include "MQTTClient.h"
-#include <wiringPi.h>
+#include <wiringPi.h>//led 
 #define ADDRESS     "tcp://192.168.1.11:1883"
 #define CLIENTID    "bincyvarghese"
 #define AUTHMETHOD  "bincyvarghese"
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     MQTTClient_connectOptions opts = MQTTClient_connectOptions_initializer;
     int rc;
     int ch;
-    int pin = 7;
+    int pin = 7;//led
     if (wiringPiSetup() == -1)
     exit (1);
     MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
     pinMode(pin, OUTPUT);
     MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, delivered);
     if ((rc = MQTTClient_connect(client, &opts)) != MQTTCLIENT_SUCCESS) {
-        digitalWrite(pin, 1);
+        digitalWrite(pin, 1);//led
         printf("LED On\n");
         printf("Failed to connect, return code %d\n", rc);
         exit(-1);
