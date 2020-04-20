@@ -3,11 +3,9 @@
 #include <sstream>
 #include <fstream>
 #include <string.h>
-#include <time.h>
+#include <time.h>//time
 #include "MQTTClient.h"
-//export MQTT_C_CLIENT_TRACE=ON
-//export MQTT_C_CLIENT_TRACE_LEVEL=PROTOCOL
-#define  CPU_TEMP "/sys/class/thermal/thermal_zone0/temp"
+#define  CPU_TEMP "/sys/class/thermal/thermal_zone0/temp"//temperature
 using namespace std;
 
 //Please replace the following address with the address of your server
@@ -18,11 +16,9 @@ using namespace std;
 #define TOPIC      "ee513/CPUTemp"
 #define PAYLOAD     "online"//last will example
 #define PAYLOAD_OFF "offline"
-#define QOS        1
+#define QOS        1// we have to change it to 0,1,2
 #define TIMEOUT    10000L
 
-//MQTT_C_CLIENT_TRACE=ON
-//MQTT_C_CLIENT_TRACE_LEVEL=PROTOCOL
   double  theseSecs = 0.0;//Cpu load and time 
   double  startSecs = 0.0;
   double  secs;
@@ -92,17 +88,15 @@ int main(int argc, char* argv[]) {
    MQTTClient_willOptions will_opts = MQTTClient_willOptions_initializer;//last will
    MQTTClient_message pubmsg = MQTTClient_message_initializer;
    MQTTClient_deliveryToken token;
-   //MQTT_C_CLIENT_TRACE=ON
-  // MQTT_C_CLIENT_TRACE_LEVEL=PROTOCOL
    will_opts.topicName = TOPIC;//last will
    will_opts.message = PAYLOAD_OFF;
    will_opts.qos = QOS;
    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
    opts.keepAliveInterval = 20;
-   opts.cleansession = 1;
+   opts.cleansession = 1;//change to 0 if we need to PERSISTENCE  
    opts.username = AUTHMETHOD;
    opts.password = AUTHTOKEN;
-   opts.will = &will_opts;
+   opts.will = &will_opts;//last will
    int rc;
    if ((rc = MQTTClient_connect(client, &opts)) != MQTTCLIENT_SUCCESS) {
       cout << "Failed to connect, return code " << rc << endl;
